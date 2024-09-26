@@ -111,44 +111,14 @@ function App() {
         background: "linear-gradient(#000, #111)",
       }}
     >
-      <div
-        id="title"
-        className="absolute z-50 top-1/4 left-1/2 flex justify-center items-center flex-col -translate-x-1/2 -translate-y-1/2 w-full"
-      >
-        <h1 className="text-4xl font-bold">Shred a picture</h1>
-        <p>The only real way to get rid of a picture online</p>
-      </div>
-      <div className="absolute z-50 top-3/4 left-1/2 flex justify-center items-center flex-col -translate-x-1/2 -translate-y-1/2">
-        <label htmlFor="picture" className="instruction text-center">
-          <p>1. Select a picture</p>
-        </label>
-        <input
-          className="max-w-min instruction"
-          type="file"
-          name="picture"
-          accept=".jpg, .jpeg, .png"
-          onChange={(e: ChangeEvent<HTMLInputElement>) => {
-            const file = e.target.files?.[0];
-            if (file) {
-              const reader = new FileReader();
-              reader.onload = (e: ProgressEvent<FileReader>) => {
-                setCurrentImage(e.target?.result as string);
-              };
-              reader.readAsDataURL(file);
-            }
-          }}
-        />
-        <div id="outerButton" className="instruction">
-          <button
-            id="button"
-            className="text-xl break-keep min-w-max"
-            onClick={start}
-          >
-            2. Shred it
-          </button>
-        </div>
-      </div>
       <div className=" h-full w-full relative overflow-clip">
+        <div
+          id="title"
+          className="absolute z-50 top-1/2 left-1/2 flex justify-center items-center flex-col -translate-x-1/2 -translate-y-1/2 w-full"
+        >
+          <h1 className="text-4xl font-bold">Shred a picture</h1>
+          <p>The only real way to get rid of a picture online</p>
+        </div>
         <InputPaper image={currentImage} />
       </div>
       <div
@@ -177,6 +147,36 @@ function App() {
                 ></div>
               )
           )}
+        </div>
+        <div className="absolute z-50 top-1/2 left-1/2 flex justify-center items-center flex-col -translate-x-1/2 -translate-y-1/2">
+          <label htmlFor="picture" className="instruction text-center">
+            <p>1. Select a picture</p>
+          </label>
+          <input
+            className="max-w-min instruction"
+            type="file"
+            name="picture"
+            accept=".jpg, .jpeg, .png"
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              const file = e.target.files?.[0];
+              if (file) {
+                const reader = new FileReader();
+                reader.onload = (e: ProgressEvent<FileReader>) => {
+                  setCurrentImage(e.target?.result as string);
+                };
+                reader.readAsDataURL(file);
+              }
+            }}
+          />
+          <div id="outerButton" className="instruction">
+            <button
+              id="button"
+              className="text-xl break-keep min-w-max"
+              onClick={start}
+            >
+              2. Shred it
+            </button>
+          </div>
         </div>
         <OutputPaper shredAmount={15} shredAngle={angle} image={currentImage} />
       </div>
