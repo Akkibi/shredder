@@ -37,33 +37,36 @@ const OutputPaper = ({
         id="picureOut"
         className="absolute left-1/2 -translate-x-1/2 max-w-[30vh] max-h-[25vh] w-full h-full"
       >
-        {[...Array(shredAmount)].map((i) => (
-          <div
-            className="absolute h-full"
-            key={i}
-            style={{
-              filter: "drop-shadow(0 0 10px #000000dd)",
-              transform: `rotate(${stripes[i].angle * shredAngle}deg)`,
-              zIndex: stripes[i].zindex,
-              left: `${(i / shredAmount) * 100}%`,
-              top: stripes[i].top * (1 + shredAngle / 2),
-              width: `${100 / shredAmount}%`,
-              transformOrigin: `0% ${stripes[i].origin}%`,
-            }}
-          >
-            <img
-              style={{
-                objectPosition: `${(i / shredAmount) * 100}% 0%`,
-                clipPath: stripes[i].leftOrRight
-                  ? "ellipse(100% 200% at 00% -50%)"
-                  : "ellipse(100% 200% at 100% -50%)",
-              }}
-              src={image}
-              alt=""
-              className=" h-full object-cover origin-center w-full"
-            />
-          </div>
-        ))}
+        {[...Array(shredAmount)].map(
+          (x, i) =>
+            x == undefined && (
+              <div
+                className="absolute h-full"
+                key={i}
+                style={{
+                  filter: "drop-shadow(0 0 10px #000000dd)",
+                  transform: `rotate(${stripes[i].angle * shredAngle}deg)`,
+                  zIndex: stripes[i].zindex,
+                  left: `${(i / shredAmount) * 100}%`,
+                  top: stripes[i].top * (1 + shredAngle / 2),
+                  width: `${100 / shredAmount}%`,
+                  transformOrigin: `0% ${stripes[i].origin}%`,
+                }}
+              >
+                <img
+                  style={{
+                    objectPosition: `${(i / shredAmount) * 100}% 0%`,
+                    clipPath: stripes[i].leftOrRight
+                      ? "ellipse(100% 200% at 00% -50%)"
+                      : "ellipse(100% 200% at 100% -50%)",
+                  }}
+                  src={image}
+                  alt=""
+                  className=" h-full object-cover origin-center w-full"
+                />
+              </div>
+            )
+        )}
       </div>
     );
   }

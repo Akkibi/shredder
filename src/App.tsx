@@ -11,15 +11,8 @@ gsap.registerPlugin(useGSAP);
 function App() {
   const paper = { angle: 0 };
   const [angle, setAngle] = useState(0);
-  const tl = useRef(gsap.timeline());
+  const tl = useRef(gsap.timeline({ paused: true }));
   const [currentImage, setCurrentImage] = useState<string>("firby.jpg");
-
-  const start = () => {
-    tl.current.progress(0);
-    tl.current.play();
-    paper.angle = 0;
-    setAngle(0);
-  };
 
   useGSAP(() => {
     tl.current
@@ -96,9 +89,15 @@ function App() {
         { y: "0", duration: 1, ease: "back.out", stagger: 0.25 },
         "-=0.75"
       );
-    tl.current.pause();
     tl.current.progress(0.01);
   });
+
+  const start = () => {
+    tl.current.progress(0);
+    tl.current.play();
+    paper.angle = 0;
+    setAngle(0);
+  };
 
   const handleUpdate = () => {
     setAngle(paper.angle);
@@ -165,16 +164,19 @@ function App() {
       </div>
       <div className=" h-full w-full relative overflow-clip">
         <div className="max-w-[30vh] w-full h-3 left-1/2 -translate-x-1/2 absolute z-50">
-          {[...Array(15 + 1)].map((i) => (
-            <div
-              key={i}
-              className="h-full w-[2px] bg-white rounded-s-full absolute"
-              style={{
-                left: `${(i / 15) * 100}%`,
-                background: "linear-gradient(#555, #fff)",
-              }}
-            ></div>
-          ))}
+          {[...Array(15 + 1)].map(
+            (x, i) =>
+              x == undefined && (
+                <div
+                  key={i}
+                  className="h-full w-[2px] bg-white rounded-s-full absolute"
+                  style={{
+                    left: `${(i / 15) * 100}%`,
+                    background: "linear-gradient(#555, #fff)",
+                  }}
+                ></div>
+              )
+          )}
         </div>
         <OutputPaper shredAmount={15} shredAngle={angle} image={currentImage} />
       </div>
