@@ -25,6 +25,10 @@ body {
   overflow: hidden;
 }
 
+#container {
+  clip-path: inset(0px);
+}
+
 body {
   background-size: 25px 25px;
   background-image: linear-gradient(

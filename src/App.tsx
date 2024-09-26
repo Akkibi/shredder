@@ -1,6 +1,6 @@
 import { InputPaper } from "./components/InputPaper";
 import { OutputPaper } from "./components/OutputPaper";
-import { useEffect, useRef } from "react";
+import { ChangeEvent, useRef } from "react";
 import { useState } from "react";
 
 import { gsap } from "gsap";
@@ -11,8 +11,7 @@ gsap.registerPlugin(useGSAP);
 function App() {
   const paper = { angle: 0 };
   const [angle, setAngle] = useState(0);
-  const containerRef = useRef<HTMLDivElement>();
-  const tl = useRef();
+  const tl = useRef(gsap.timeline());
   const [currentImage, setCurrentImage] = useState<string>("firby.jpg");
 
   const start = () => {
@@ -22,86 +21,84 @@ function App() {
     setAngle(0);
   };
 
-  useGSAP(
-    () => {
-      tl.current = gsap
-        .timeline()
-        .fromTo(
-          "#title",
-          { y: "0" },
-          { y: "-50vh", duration: 1, ease: "back.in" }
-        )
-        .fromTo(
-          ".instruction",
-          { y: "0" },
-          { y: "50vh", duration: 1, ease: "back.in" },
-          "<"
-        )
-        .fromTo(
-          "#container",
-          { clipPath: "inset(0px)" },
-          {
-            clipPath: "inset(5px)",
-            duration: 1,
-            delay: 0.5,
-            ease: "linear",
-          },
-          "<"
-        )
-        .fromTo(
-          "#pictureIn",
-          { top: "0%", y: "-100%" },
-          { top: "100%", y: "-70%", duration: 2, ease: "sine.out" }
-        )
-        .to("#pictureIn", {
-          top: "100%",
-          y: "50%",
-          duration: 2,
+  useGSAP(() => {
+    tl.current
+      .set("#container", { clipPath: "inset(0px)" })
+      .fromTo(
+        "#title",
+        { y: "0" },
+        { y: "-50vh", duration: 1, ease: "back.in" }
+      )
+      .fromTo(
+        ".instruction",
+        { y: "0" },
+        { y: "50vh", duration: 1, ease: "back.in" },
+        "<"
+      )
+      .fromTo(
+        "#container",
+        { clipPath: "inset(0px)" },
+        {
+          clipPath: "inset(5px)",
+          duration: 1,
+          delay: 0.5,
           ease: "linear",
-        })
-        .fromTo(
-          "#picureOut",
-          { top: "0%", y: "-110%" },
-          { top: "0%", y: "-10%", duration: 2, ease: "linear" },
-          "-=1.5"
-        )
-        .to("#picureOut", {
-          top: "100%",
-          y: "10%",
+        },
+        "<"
+      )
+      .fromTo(
+        "#pictureIn",
+        { top: "0%", y: "-100%" },
+        { top: "100%", y: "-70%", duration: 2, ease: "sine.out" }
+      )
+      .to("#pictureIn", {
+        top: "100%",
+        y: "50%",
+        duration: 2,
+        ease: "linear",
+      })
+      .fromTo(
+        "#picureOut",
+        { top: "0%", y: "-110%" },
+        { top: "0%", y: "-10%", duration: 2, ease: "linear" },
+        "-=1.5"
+      )
+      .to("#picureOut", {
+        top: "100%",
+        y: "10%",
+        duration: 2,
+        ease: "sine.in",
+      })
+      .fromTo(
+        paper,
+        { angle: 0 },
+        {
+          angle: 180,
           duration: 2,
           ease: "sine.in",
-        })
-        .fromTo(
-          paper,
-          { angle: 0 },
-          {
-            angle: 180,
-            duration: 2,
-            ease: "sine.in",
-            onUpdate: handleUpdate,
-          },
-          "<"
-        )
-        .fromTo(
-          "#container",
-          { clipPath: "inset(5px)" },
-          {
-            clipPath: "inset(0px)",
-            duration: 1,
-            ease: "linear",
-          }
-        )
-        .to("#title", { y: "0", duration: 1, ease: "back.out" }, "<")
-        .to(
-          ".instruction",
-          { y: "0", duration: 1, ease: "back.out", stagger: 0.25 },
-          "-=0.75"
-        );
-      tl.current.progress(0);
-      tl.current.pause();
-    },
-    { scope: containerRef.current }
-  );
+          onUpdate: handleUpdate,
+        },
+        "<"
+      )
+      .fromTo(
+        "#container",
+        { clipPath: "inset(5px)" },
+        {
+          clipPath: "inset(0px)",
+          duration: 1,
+          ease: "linear",
+        },
+        ">"
+      )
+      .to("#title", { y: "0", duration: 1, ease: "back.out" }, "<")
+      .to(
+        ".instruction",
+        { y: "0", duration: 1, ease: "back.out", stagger: 0.25 },
+        "-=0.75"
+      );
+    tl.current.pause();
+    tl.current.progress(0.01);
+  });
 
   const handleUpdate = () => {
     setAngle(paper.angle);
@@ -113,9 +110,7 @@ function App() {
       id="container"
       style={{
         background: "linear-gradient(#000, #111)",
-        clipPath: "inset(0px)",
       }}
-      ref={containerRef}
     >
       <div
         id="title"
@@ -133,13 +128,15 @@ function App() {
           type="file"
           name="picture"
           accept=".jpg, .jpeg, .png"
-          onChange={(e) => {
-            const file = e.target.files[0];
-            const reader = new FileReader();
-            reader.onload = (e) => {
-              setCurrentImage(e.target.result as string);
-            };
-            reader.readAsDataURL(file);
+          onChange={(e: ChangeEvent<HTMLInputElement>) => {
+            const file = e.target.files?.[0];
+            if (file) {
+              const reader = new FileReader();
+              reader.onload = (e: ProgressEvent<FileReader>) => {
+                setCurrentImage(e.target?.result as string);
+              };
+              reader.readAsDataURL(file);
+            }
           }}
         />
         <div id="outerButton" className="instruction">
@@ -181,6 +178,9 @@ function App() {
         </div>
         <OutputPaper shredAmount={15} shredAngle={angle} image={currentImage} />
       </div>
+      <p className="fixed bottom-2 right-2 text-sm opacity-50">
+        © Akira Valade 2024
+      </p>
     </div>
   );
 }

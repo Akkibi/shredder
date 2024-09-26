@@ -16,7 +16,6 @@ const OutputPaper = ({
   shredAmount: number;
   image: string;
 }) => {
-  // console.log("angle : ", shredAngle);
   const [stripes, setStripes] = useState<Array<Stripe>>([]);
 
   if (stripes.length == 0) {
@@ -38,7 +37,7 @@ const OutputPaper = ({
         id="picureOut"
         className="absolute left-1/2 -translate-x-1/2 max-w-[30vh] max-h-[25vh] w-full h-full"
       >
-        {[...Array(shredAmount)].map((x, i) => (
+        {[...Array(shredAmount)].map((i) => (
           <div
             className="absolute h-full"
             key={i}
