@@ -165,7 +165,7 @@ function App() {
       </div>
       <div className=" h-full w-full relative overflow-clip">
         <div className="max-w-[30vh] w-full h-3 left-1/2 -translate-x-1/2 absolute z-50">
-          {[...Array(15 + 1)].map((x, i) => (
+          {[...Array(15 + 1)].map((i) => (
             <div
               key={i}
               className="h-full w-[2px] bg-white rounded-s-full absolute"
