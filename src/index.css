@@ -52,18 +52,6 @@ body {
     background-position: 25px 0;
   }
 }
-input[type="file"]::file-selector-button {
-  margin-right: 8px;
-  border: none;
-  background: linear-gradient(#084cdf, #0e5edf);
-  border-bottom: 2px solid #042adf;
-  border-top: 2px solid #147ddf;
-  padding: 0.5rem 1.5rem;
-  border-radius: 0.5rem;
-  color: #fff;
-  cursor: pointer;
-  box-shadow: 0 0.5rem 1rem -5px #000;
-}
 
 input {
   background: linear-gradient(#111111, #151515);
@@ -73,6 +61,26 @@ input {
   padding: 1rem;
   border-radius: 1.25rem;
   margin: 0.5rem;
+}
+
+input[type="file"]::file-selector-button {
+  margin-right: 8px;
+  border: none;
+  background: linear-gradient(#0e5edf, #084cdf);
+  border-bottom: 2px solid #042acf;
+  border-top: 2px solid #147ddf;
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.5rem;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 0.5rem 1rem -5px #000;
+  transition: all 0.1s;
+}
+
+input[type="file"]::file-selector-button:active {
+  background: linear-gradient(#084cdf, #084cdf);
+  border-top: 2px solid #042acf;
+  transform: scale(0.99);
 }
 
 #outerButton {
@@ -85,7 +93,7 @@ input {
 }
 
 #button {
-  background: linear-gradient(#990000, #aa0000);
+  background: linear-gradient(#aa0000, #990000);
   border-bottom: 2px solid #660000;
   border-top: 2px solid #bb4444;
   color: #fcc;
@@ -93,6 +101,13 @@ input {
   padding: 0.75rem 2rem;
   border-radius: 0.75rem;
   box-shadow: 0 0.5rem 1rem -5px #000;
+  transition: all 0.1s;
+}
+
+button:active {
+  background: linear-gradient(#990000, #990000) !important;
+  border-top: 2px solid #660000 !important;
+  transform: scale(0.99);
 }
 
 .real-shadow {

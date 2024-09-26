@@ -86,7 +86,7 @@ function App() {
       .to("#title", { y: "0", duration: 1, ease: "back.out" }, "<")
       .to(
         ".instruction",
-        { y: "0", duration: 1, ease: "back.out", stagger: 0.25 },
+        { y: "0", duration: 1, ease: "back.out", stagger: 0.1 },
         "-=0.75"
       );
     tl.current.progress(0.01);
